@@ -1,32 +1,34 @@
 import { Calendar, momentLocalizer, Views   } from 'react-big-calendar' 
-import events from './events';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment'
 import { useState } from 'react';
-// import ExampleControlPlot from './ExampleControlPlot';
+import { useEffect } from 'react';
+
 
 const localizer = momentLocalizer(moment);
 
+const propTypes = {}
+
 function MyCalendar() {
-    const [myEvent, setMyEvent] = useState(
-        [
-            ...events
-        ]
-    )
+    const [myEvent, setMyEvent] = useState([])
 
     var  handleSelect = ({ start, end }) => {
-        const title = window.prompt('New Event name')
-        if (title)
-            setMyEvent([
-              ...events,
-              {
-                start,
-                end,
-                title,
-              }
-            ])
-      }
+        const title = window.prompt('New Event name');
+        
+      
+        if (title) {
+            let copyMyEvent = [...myEvent];
+            copyMyEvent.push(
+                {
+                    start,
+                    end,
+                    title
+                }
+            )
+            setMyEvent(copyMyEvent);
 
+        }
+    }
 
     return (
         <Calendar 
@@ -38,9 +40,12 @@ function MyCalendar() {
             defaultDate={new Date(Date.now())}
             onSelectEvent={event => alert(event.title)}
             onSelectSlot={handleSelect}
+            step={30}
+            views={["month", "week", "day", 'agenda']}
         />
     ) 
 }
 
+MyCalendar.propTypes = propTypes
 
 export default MyCalendar;
