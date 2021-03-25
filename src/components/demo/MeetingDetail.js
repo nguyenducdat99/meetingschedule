@@ -2,6 +2,7 @@ function MeetingDetail(props) {
     // get props 
     const {onClose,presentEventRec, onDelete} = props;
     
+    // handler delete event
     var onHandleDelete = () => {
         onDelete(presentEventRec.id);
     }

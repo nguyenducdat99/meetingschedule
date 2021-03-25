@@ -35,6 +35,7 @@ function MeetingInput(props) {
         })
     }
 
+    // clear input value
     var onResetInput = () => {
         setInfo(
             {

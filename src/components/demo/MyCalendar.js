@@ -122,6 +122,7 @@ function MyCalendar() {
         )
     }
 
+    // set data to firebase
     useEffect(
         () => {
             if(valueInputForm.author!=='') {
