@@ -1,3 +1,18 @@
+:root {
+    --background-black-25: rgba(0, 0, 0, 0.178);
+    --btn-primary: #3174ad;
+    --background-gray: rgb(239, 239, 239);
+    --color-white: white;
+    --btn-primary-focus: rgb(0, 119, 255);
+    --border-lightgray: lightgray;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 .rbc-month-view {
     height: 93vh !important;
   }
@@ -8,7 +23,7 @@
 .detail-wrapper {
     height: 100vh;
     width: 100vw;
-    background-color: rgba(0, 0, 0, 0.178);
+    background-color: var(--background-black-25);
     position: fixed;
     top: 0;
     left: 0;
@@ -22,7 +37,7 @@
     width: 60%;
     height: 60%;
     border-radius: 5px;
-    background-color: rgb(239, 239, 239);
+    background-color: var(--background-gray);
     padding: 30px;
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -33,10 +48,11 @@
 
 .detail-wrapper .detail .detail__contents,
 .detail-wrapper .detail .detail__start,
-.detail-wrapper .detail .detail__end{
+.detail-wrapper .detail .detail__end,
+.detail-wrapper .detail .detail__author{
     padding: 10px;
     border-radius: 5px;
-    background-color: white;
+    background-color: var(--color-white);
 }
 
 .detail-wrapper .detail .detail__time {
@@ -45,16 +61,40 @@
     row-gap: 30px;
 }
 
-
+.detail-wrapper .detail .detail__contents p {
+    padding-bottom: 30px;
+}
 
 button {
-    background-color: #3174ad;
-    color: white;
+    background-color: var(--btn-primary);
+    color: var(--color-white);
     padding: 0.375rem 0.75rem;
     border: none;
 }
 button:focus {
     border: none;
     outline: none;
-    background-color: rgb(0, 119, 255);
+    background-color: var(--btn-primary-focus);
+}
+
+.meeting-input {
+    background-color: var(--background-gray);
+    width: 40%;
+    height: auto;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.meeting-input .form-group {
+    padding-bottom: 15px;
+}
+.meeting-input .form-group .form-control {
+    width: 100%;
+    padding: 0.375rem;
+    line-height: 1.5;
+    border: 1px solid var(--border-lightgray);
+
+}
+input:focus {
+    outline: none;
 }
