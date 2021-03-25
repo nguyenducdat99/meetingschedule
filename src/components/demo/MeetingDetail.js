@@ -9,17 +9,27 @@ function MeetingDetail(props) {
     return (
         <>
             <div className='detail-wrapper'>
-                <p><u>Thoát</u></p>
-                <span><p><u>Xóa</u></p></span>
                 <div className="detail">
                     <div className='detail__time'>
                         <div className="detail__start">
                             <h3>Thời gian bắt đầu: </h3>
-                            <p>{presentEventRec.start.toLocaleTimeString()}</p>
+                            <p>
+                                {
+                                    presentEventRec.end.toLocaleTimeString()==='00:00:00'?
+                                    'Cả ngày':
+                                    presentEventRec.start.toLocaleTimeString()
+                                }
+                            </p>
                         </div>
                         <div className="detail__end">
                             <h3>Thời gian kết thúc</h3>
-                            <p>{presentEventRec.end.toLocaleTimeString()}</p>
+                            <p>
+                                {
+                                    presentEventRec.end.toLocaleTimeString()==='00:00:00'?
+                                    'Cả ngày':
+                                    presentEventRec.end.toLocaleTimeString()
+                                }
+                            </p>
                         </div>
                     </div>
                     <div className='detail__contents'>
