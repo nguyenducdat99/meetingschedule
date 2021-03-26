@@ -137,7 +137,7 @@ function MyCalendar() {
             return;
         } 
 
-        alert('Time unavailable.');
+        alert('Thời gian đã được đặt');
     }
 
     // set data to firebase
