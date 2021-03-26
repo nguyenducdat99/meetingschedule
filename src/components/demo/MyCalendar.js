@@ -255,7 +255,7 @@ function MyCalendar() {
                 selectable='ignoreEvents'
                 localizer={localizer}
                 events={myEvent}    
-                defaultView={Views.WORK_WEEK}
+                defaultView={Views.DAY}
                 scrollToTime={new Date(1970, 1, 1, 6)}
                 defaultDate={new Date(Date.now())}
                 onSelectEvent={onSelectEvent}
