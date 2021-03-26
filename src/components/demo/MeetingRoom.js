@@ -1,5 +1,5 @@
 export const resourceMap = [
-    { resourceId: 1, resourceTitle: 'Meeting room 1' },
-    { resourceId: 2, resourceTitle: 'Meeting room 2' },
-    { resourceId: 3, resourceTitle: 'Meeting room 3' },
+    { resourceId: 1, resourceTitle: 'Room 1' },
+    { resourceId: 2, resourceTitle: 'Room 2' },
+    { resourceId: 3, resourceTitle: 'Room 3' },
 ]

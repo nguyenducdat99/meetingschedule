@@ -46,6 +46,12 @@ function MeetingInput(props) {
         )
     }
 
+    // handler when click cancel
+    var onCancelForm = () => {
+        onClose(null);
+        onResetInput();
+    }
+
     return (
         <>
             <div className='detail-wrapper'>
@@ -77,7 +83,8 @@ function MeetingInput(props) {
                         </div>
                         <div className='form-group'>
                             <button type='submit'>Ok</button>&nbsp;&nbsp;
-                            <button type='reset' onClick={onResetInput}>Cancel</button>
+                            <button type='submit' onClick={onResetInput}>Reset</button>&nbsp;&nbsp;
+                            <button type='reset' onClick={onCancelForm}>Cancel</button>
                         </div>
                     </form>
                 </div>

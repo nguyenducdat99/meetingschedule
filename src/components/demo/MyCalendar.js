@@ -1,12 +1,12 @@
 import { Calendar, momentLocalizer, Views   } from 'react-big-calendar' 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment'
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { db } from '../config/FirebaseConfig';
-import { useEffect } from 'react';
 import Detail from './MeetingDetail';
 import { resourceMap } from './MeetingRoom';
 import MeetingInput from './MeetingInput';
+
 
 
 const roomMap = [ ...resourceMap ];
@@ -97,6 +97,7 @@ function MyCalendar() {
                         )
                     })
                     setMyEvent([...listMeeting]);
+                    
                 }
                 else {
                     console.log("No data available");
@@ -111,15 +112,32 @@ function MyCalendar() {
     // handle when select  time
     var  handleSelect = ({ resourceId, start, end }) => {
         
-        onOpenInputForm();
-        setValueInputForm(
-            {
-                ...valueInputForm,
-                start,
-                end,
-                resourceId
+        let myEventFilter  = myEvent.filter(item => {
+            return item.resourceId === resourceId;
+        })
+        let result = true;
+
+
+        myEventFilter.forEach(element => {
+            if (moment(element.start).isBetween(start,end) || moment(element.end).isBetween(start,end)){
+                result = false;
             }
-        )
+        });
+
+        if (result) {
+            onOpenInputForm();
+            setValueInputForm(
+                {
+                    ...valueInputForm,
+                    start,
+                    end,
+                    resourceId
+                }
+            )
+            return;
+        } 
+
+        alert('Time unavailable.');
     }
 
     // set data to firebase
@@ -148,6 +166,15 @@ function MyCalendar() {
                             title: valueInputForm.title
                         }
                     )
+                )
+                setValueInputForm(
+                    {
+                        author: '',
+                        title: '',
+                        start: '',
+                        end: '',
+                        resourceId: ''
+                    }
                 )
             }
             // eslint-disable-next-line
@@ -208,21 +235,24 @@ function MyCalendar() {
 
     // handle close input form 
     var onCloseInputForm = data => {
-        setValueInputForm(
-            {
-                ...valueInputForm,
-                author: data.author,
-                title: data.title
-            }
-        )
+        if (data!==null) {
+            setValueInputForm(
+                {
+                    ...valueInputForm,
+                    author: data.author,
+                    title: data.title
+                }
+            )
+        }
         setShowInput(false);
         
     }
 
+
     return (
         <>
             <Calendar 
-                selectable
+                selectable='ignoreEvents'
                 localizer={localizer}
                 events={myEvent}    
                 defaultView={Views.WORK_WEEK}
@@ -230,7 +260,7 @@ function MyCalendar() {
                 defaultDate={new Date(Date.now())}
                 onSelectEvent={onSelectEvent}
                 onSelectSlot={handleSelect}
-                step={30}
+                step={15}
                 views={["work_week", "week", "day", 'agenda']}
                 resources={roomMap}
                 resourceIdAccessor="resourceId"
