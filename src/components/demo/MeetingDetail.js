@@ -19,7 +19,6 @@ function MeetingDetail(props) {
         onDelete(presentEventRec.id);
     }
 
-    console.log(presentEventRec);
     return (
         <>
             <div className='detail-wrapper'>
