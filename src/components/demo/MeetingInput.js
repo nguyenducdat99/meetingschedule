@@ -1,4 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { resourceMap } from './MeetingRoom';
+
+function getHoursAndMinute(time) {
+    if (time === '') return;
+    return '' + time.getHours() + ':' + time.getMinutes();
+}
+
+function getNameRoom(rooms, id) {
+    let result = '';
+
+    rooms.forEach(element => {
+        if (element.resourceId===id) result=element.resourceTitle
+    });
+
+    return result;
+}
 
 function MeetingInput(props) {
     // declare state
@@ -10,7 +26,21 @@ function MeetingInput(props) {
     )
 
     // get props 
-    const {onClose} = props;
+    const {onClose, eventEditRec, valueInputFormRec} = props;
+
+    // load data edit
+    useEffect(
+        () => {
+            if (eventEditRec!==null) {
+                setInfo({
+                    ...info,
+                    author: eventEditRec.author,
+                    title: eventEditRec.title
+                })
+            }
+        // eslint-disable-next-line
+        },[eventEditRec]
+    )
 
     // handle when close form input
     var onHandleClose = () => {
@@ -85,6 +115,29 @@ function MeetingInput(props) {
                             <button type='submit'>Ok</button>&nbsp;&nbsp;
                             <button type='submit' onClick={onResetInput}>Reset</button>&nbsp;&nbsp;
                             <button type='reset' onClick={onCancelForm}>Cancel</button>
+                        </div>
+                        <div className='notes'>
+                            <p><u><b>Notes:</b></u> 
+                                {
+                                    eventEditRec===null?
+                                    (
+                                        ' The meeting starts from ' + 
+                                        getHoursAndMinute(valueInputFormRec.start) +
+                                        ' to ' + 
+                                        getHoursAndMinute(valueInputFormRec.end) + 
+                                        ' in ' + 
+                                        getNameRoom(resourceMap,valueInputFormRec.resourceId)
+                                    ):
+                                    (
+                                        'The meeting starts from ' + 
+                                        getHoursAndMinute(eventEditRec.start) +
+                                        ' to ' + 
+                                        getHoursAndMinute(eventEditRec.end) + 
+                                        ' in ' +
+                                        getNameRoom(resourceMap,eventEditRec.resourceId)
+                                    )
+                                }
+                            </p>
                         </div>
                     </form>
                 </div>

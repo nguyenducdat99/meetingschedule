@@ -5,6 +5,8 @@
     --color-white: white;
     --btn-primary-focus: rgb(0, 119, 255);
     --border-lightgray: lightgray;
+    --color-notes: red;
+    --color-gray: gray;
 }
 
 * {
@@ -48,6 +50,10 @@
     .detail-wrapper .detail {
         column-gap: 25px;
         width: 65%;
+        padding: 25px
+    }
+    .detail-wrapper .detail .detail__time {
+        row-gap: 25px !important;
     }
 }
 
@@ -55,12 +61,20 @@
     .detail-wrapper  .detail {
         column-gap: 20px;
         width: 75%;
+        padding: 20px;
+    }
+    .detail-wrapper .detail .detail__time {
+        row-gap: 20px !important;
     }
 }
 @media only screen and (max-width: 480px) {
     .detail-wrapper  .detail {
         column-gap: 15px;
         width:80%;
+        padding: 15px;
+    }
+    .detail-wrapper .detail .detail__time {
+        row-gap: 15px !important;
     }
 }
 
@@ -68,6 +82,10 @@
     .detail-wrapper  .detail {
         width: 90%;
         column-gap: 10px;
+        padding: 10px
+    }
+    .detail-wrapper .detail .detail__time {
+        row-gap: 10px !important;
     }
 }
 
@@ -86,10 +104,25 @@
     row-gap: 30px;
 }
 
+.detail h3 {
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.detail p {
+    font-size: 16px;
+    color: var(--color-gray);
+    font-style: italic;
+}
+
 .detail-wrapper .detail .detail__contents p {
     padding-bottom: 30px;
 }
-
+.detail-wrapper .detail .detail__contents button {
+    min-width: 100px;
+    margin-bottom: 10px;
+    display: block;
+}
 button {
     background-color: var(--btn-primary);
     color: var(--color-white);
@@ -133,6 +166,9 @@ button:focus {
 }
 .meeting-input .form-group {
     padding-bottom: 15px;
+}
+.meeting-input .notes {
+    color: var(--color-notes);
 }
 .meeting-input .form-group .form-control {
     width: 100%;

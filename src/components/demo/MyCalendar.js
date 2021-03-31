@@ -30,15 +30,6 @@ function createUUID() {
     return uuid;
 }
 
-function findEvent(items, id) {
-    let  result = {};
-
-    items.forEach(element => {
-        if (element.id === id) result = {...element}
-    });
-
-    return result;
-}
 
 function findIndex(items, id) {
     let  result = -1;
@@ -64,7 +55,8 @@ function MyCalendar() {
             start: '',
             end: '',
             title: '',
-            author: ''
+            author: '',
+            resourceId: ''
         }
     )
     const [valueInputForm,setValueInputForm] = useState(
@@ -76,6 +68,7 @@ function MyCalendar() {
             resourceId: ''
         }
     )
+    const [eventEdit, setEventEdit] = useState(null);
 
     // load data
     useEffect(
@@ -143,8 +136,37 @@ function MyCalendar() {
     // set data to firebase
     useEffect(
         () => {
-            if(valueInputForm.author!=='') {
-                 
+            if(valueInputForm.author!==''&&eventEdit!==null) {
+                let copyMyEvent = [...myEvent];
+                let index = findIndex(copyMyEvent, eventEdit.id);
+                
+                if (index !== -1) {
+                    copyMyEvent[index] = {
+                        ...copyMyEvent[index],
+                        author: valueInputForm.author,
+                        resourceId: valueInputForm.resourceId,
+                        start: valueInputForm.start,
+                        end: valueInputForm.end,
+                        title: valueInputForm.title
+                    }
+                    setMyEvent(copyMyEvent);
+                    database.ref('meeting/'+eventEdit.id).set(
+                        JSON.stringify(
+                            {
+                                author: valueInputForm.author,
+                                resourceId: valueInputForm.resourceId,
+                                start: valueInputForm.start,
+                                end: valueInputForm.end,
+                                title: valueInputForm.title
+                            }
+                        )
+                    )
+                    setEventEdit(null);
+                    onResetValueInput();
+                }
+                return;
+            }
+            if(valueInputForm.author!==''&&eventEdit===null) {
                 let copyMyEvent = [...myEvent];
                 copyMyEvent.push(
                     {
@@ -167,15 +189,7 @@ function MyCalendar() {
                         }
                     )
                 )
-                setValueInputForm(
-                    {
-                        author: '',
-                        title: '',
-                        start: '',
-                        end: '',
-                        resourceId: ''
-                    }
-                )
+                onResetValueInput();
             }
             // eslint-disable-next-line
         },[valueInputForm]
@@ -183,20 +197,20 @@ function MyCalendar() {
 
     // hanle when select event 
     var onSelectEvent = event => {
-        
         setPresentEvent({
             ...presentEvent,
-            id: findEvent(myEvent,event.id).id,
-            start: findEvent(myEvent,event.id).start,
-            end: findEvent(myEvent,event.id).end,
-            title: findEvent(myEvent,event.id).title,
-            author: findEvent(myEvent,event.id).author,
+            id: event.id,
+            start: event.start,
+            end: event.end,
+            title: event.title,
+            author: event.author,
+            resourceId: event.resourceId
         })
        
         onOpenForm();
        
     }
-
+    
     // open form 
     var onOpenForm = () => {
         setShowDetail(true);
@@ -235,7 +249,7 @@ function MyCalendar() {
 
     // handle close input form 
     var onCloseInputForm = data => {
-        if (data!==null) {
+        if (data!==null && eventEdit===null) {
             setValueInputForm(
                 {
                     ...valueInputForm,
@@ -244,11 +258,44 @@ function MyCalendar() {
                 }
             )
         }
+        if (data!==null&eventEdit!==null){
+            setValueInputForm(
+                {
+                    ...valueInputForm,
+                    author: data.author,
+                    title: data.title,
+                    start: eventEdit.start,
+                    end: eventEdit.end,
+                    resourceId: eventEdit.resourceId
+                }
+            )
+        }
+        if (data===null) {
+            setEventEdit(null);
+            onResetValueInput();
+        }
         setShowInput(false);
-        
     }
 
+    // clear value input form
+    var onResetValueInput = () => {
+        setValueInputForm(
+            {
+                author: '',
+                title: '',
+                start: '',
+                end: '',
+                resourceId: ''
+            }
+        )
+    }
 
+    // handle when edit event
+    var onEditEvent = dataEdit => {
+        onCloseForm();
+        setEventEdit({...dataEdit})
+        onOpenInputForm();
+    }
     return (
         <>
             <Calendar 
@@ -272,6 +319,7 @@ function MyCalendar() {
                     onClose={onCloseForm}
                     presentEventRec={presentEvent}
                     onDelete={onDeleteEvent}
+                    onEdit={onEditEvent}
                 />:
                 ''
             }
@@ -279,6 +327,8 @@ function MyCalendar() {
                 showInput?
                 <MeetingInput 
                     onClose={onCloseInputForm}
+                    eventEditRec={eventEdit===null?null:eventEdit}
+                    valueInputFormRec={valueInputForm}
                 />:
                 ''
             }

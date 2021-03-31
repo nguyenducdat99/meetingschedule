@@ -1,12 +1,25 @@
+import { resourceMap } from './MeetingRoom';
+
+function getNameRoom(rooms, id) {
+    let result = '';
+
+    rooms.forEach(element => {
+        if (element.resourceId===id) result=element.resourceTitle
+    });
+
+    return result;
+}
+
 function MeetingDetail(props) {
     // get props 
-    const {onClose,presentEventRec, onDelete} = props;
+    const {onClose, presentEventRec, onDelete, onEdit} = props;
     
     // handler delete event
     var onHandleDelete = () => {
         onDelete(presentEventRec.id);
     }
 
+    console.log(presentEventRec);
     return (
         <>
             <div className='detail-wrapper'>
@@ -40,13 +53,23 @@ function MeetingDetail(props) {
                                 }
                             </p>
                         </div>
+                        <div className="detail__end">
+                            <h3>Position: </h3>
+                            <p>
+                                {
+                                    getNameRoom(resourceMap,presentEventRec.resourceId)
+                                }
+                            </p>
+                        </div>
                     </div>
                     <div className='detail__contents'>
                         <h3>Title:</h3>
                         <p>{presentEventRec.title}</p>
-                        <button type='text' onClick={onClose}>Exit</button>&nbsp;
+                        <button type='text' onClick={onClose}>Close</button>
+                        <button type='text' onClick={() => onEdit(presentEventRec)}>Edit</button>
                         <button type='text' onClick={onHandleDelete}>Delete</button>
                     </div>
+
                 </div>
             </div>
         </>
